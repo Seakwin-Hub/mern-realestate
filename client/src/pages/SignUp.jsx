@@ -17,8 +17,6 @@ export default function SignUp() {
     e.preventDefault();
     try {
       setLoading(true);
-      console.log(formData);
-      console.log(!formData);
 
       const res = await fetch("/api/auth/signup", {
         method: "POST",
@@ -52,6 +50,9 @@ export default function SignUp() {
     <div className="p-3 mx-auto max-w-lg">
       <h1 className="text-3xl text-center font-semibold my-7">Sign Up</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        {error && (
+          <p className="text-red-500 mt-5 ml-3 font-semibold"> {error}</p>
+        )}
         <input
           type="text"
           className="border p-3 rounded-lg focus:outline-none"
@@ -88,7 +89,6 @@ export default function SignUp() {
           </span>
         </Link>
       </div>
-      {error && <p className="text-red-500 mt-5"> {error}</p>}
     </div>
   );
 }
