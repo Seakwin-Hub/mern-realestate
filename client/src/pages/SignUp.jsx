@@ -25,7 +25,6 @@ export default function SignUp() {
         },
         body: JSON.stringify(formData),
       });
-      console.log("API Send");
       const data = await res.json();
 
       // console.log(data);
