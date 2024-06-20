@@ -20,7 +20,7 @@ const userSchema = mongoose.Schema(
   },
 
   //It'll add specific time to database when it was called
-  { timeStamp: true }
+  { timestamps: true }
 );
 
 const User = mongoose.model("User", userSchema);
