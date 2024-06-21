@@ -5,17 +5,21 @@ import {
   signInStart,
   signInFailure,
   singInSuccess,
+  clearError,
 } from "../redux/user/userSlice";
+import OAuth from "../components/OAuth";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
   const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  console.log(error);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       // setLoading(true);
+      dispatch(clearError());
       dispatch(signInStart());
 
       const res = await fetch("/api/auth/signin", {
@@ -58,7 +62,7 @@ export default function SignIn() {
       <h1 className="text-3xl text-center font-semibold my-7">Sign in</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         {error && (
-          <p className="text-red-500 mt-5 ml-3 font-semibold"> {error}</p>
+          <p className="text-red-500 mt-5 ml-3 font-semibold "> {error}</p>
         )}
         <input
           type="email"
@@ -80,6 +84,7 @@ export default function SignIn() {
         >
           {loading ? "Loading..." : "Sign in"}
         </button>
+        <OAuth />
       </form>
       <div className="flex gap-3 mt-5">
         <p>{`Don't have an account ? `}</p>
