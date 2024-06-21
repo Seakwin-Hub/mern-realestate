@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   signInStart,
   signInFailure,
   singInSuccess,
-  clearError,
 } from "../redux/user/userSlice";
 import OAuth from "../components/OAuth";
 
@@ -14,14 +13,11 @@ export default function SignIn() {
   const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(error);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // setLoading(true);
-      dispatch(clearError());
       dispatch(signInStart());
-
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
@@ -57,6 +53,10 @@ export default function SignIn() {
       [e.target.id]: e.target.value,
     });
   };
+
+  useEffect(() => {
+    dispatch(signInFailure(null));
+  }, []);
   return (
     <div className="p-3 mx-auto max-w-lg">
       <h1 className="text-3xl text-center font-semibold my-7">Sign in</h1>
