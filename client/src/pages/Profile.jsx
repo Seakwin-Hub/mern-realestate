@@ -14,6 +14,9 @@ import {
   deleteUserStart,
   deleteUserFailure,
   deleteUserSuccess,
+  SignOutUserFailure,
+  SignOutUserStart,
+  SignOutUserSuccess,
 } from "../redux/user/userSlice";
 
 export default function Profile() {
@@ -106,20 +109,35 @@ export default function Profile() {
     setFormData({ ...FormData, [e.target.id]: e.target.value });
   };
 
-  const handleDeleteUser = async (e) => {
+  const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
       const res = await fetch(`api/user/delete/${currentUser._id}`, {
         method: "DELETE",
       });
       const data = await res.json();
-      if (data === false) {
+      if (data.success === false) {
         dispatch(deleteUserFailure(data.message));
         return;
       }
       dispatch(deleteUserSuccess(data));
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      dispatch(SignOutUserStart());
+      const res = await fetch("/api/auth/signout");
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(SignOutUserFailure(data.message));
+        return;
+      }
+      dispatch(SignOutUserSuccess(data));
+    } catch (error) {
+      dispatch(SignOutUserFailure(error.message));
     }
   };
 
@@ -201,7 +219,9 @@ export default function Profile() {
         >
           Delete account
         </span>
-        <span className="text-red-800 cursor-pointer">Sign out</span>
+        <span onClick={handleSignOut} className="text-red-800 cursor-pointer">
+          Sign out
+        </span>
       </div>
     </div>
   );
